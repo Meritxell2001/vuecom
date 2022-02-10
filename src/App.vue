@@ -23,7 +23,7 @@
             }
         },
         methods: {
-            guardarMensaje() {
+            async guardarMensaje() {
                 let resultado = await (await fetch(`/api/add?contenido=${this.sucomentario}`)).json();
 
                 this.comentarios.push({id: resultado.insertID, contenido: this.sucomentario});
