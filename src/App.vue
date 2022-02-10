@@ -1,10 +1,10 @@
 <template>
-    <input v-model="subcomentario" placeholder="Deja tu comentario" @keypress.enter="guardarMensaje">
+    <input v-model="sucomentario" placeholder="Deja tu comentario" @keypress.enter="guardarMensaje">
     
     <button @click="cargarComentarios">Cargar ya!</button>
     
     <p v-for="comentario in comentarios" :key="comentario.id">
-        {{ comentario.texto }}
+        {{ comentario.contenido }}
     </p>
 </template>
 
@@ -13,19 +13,20 @@
         name: "app",
         data() {
             return {
-                subcomentario: "holaaa",
+                sucomentario: "holaaa",
                 comentarios: [
-                    { id: 1, texto: "adeu, molt bones" },
-                    { id: 2, texto: "holiwiii" },
-                    { id: 3, texto: "byeeee" },
-                    { id: 4, texto: "holaaas" }
+                    { id: 1, contenido: "adeu, molt bones" },
+                    { id: 2, contenido: "holiwiii" },
+                    { id: 3, contenido: "byeeee" },
+                    { id: 4, contenido: "holaaas" }
                 ]
             }
         },
         methods: {
             guardarMensaje() {
-                this.comentarios.push({id: 5, texto: this.subcomentario})
-                //guardar en la base de datos
+                let resultado = await (await fetch(`/api/add?contenido=${this.sucomentario}`)).json();
+
+                this.comentarios.push({id: resultado.insertID, contenido: this.sucomentario});
             },
             async cargarComentarios() {
                 //Descarreguem les dades de la bbdd
